@@ -6,21 +6,23 @@
   <body>
     <div id="app">
       <input type="file" name="files" id="files" class="js-files" multiple accept=".mp3" />
-      <audio autoplay class="js-player">
+      <!-- <audio autoplay class="js-player">
           <p>Ваш браузер не подддерживает HTML5 аудио.</p>
-      </audio>
+      </audio> -->
         <div>
-            <button title="Play">▶</button>
-            <button title="Pause">⏸</button>
+            <button title="Play" class="js-play">▶</button>
+            <button title="Pause" class="js-pause">⏸</button>
             <button title="Play/Pause">⏯</button>
-            <button title="Previous">⏮</button>
-            <button title="Next">⏭</button>
+            <button title="Previous" class="js-prev">⏮</button>
+            <button title="Next" class="js-next">⏭</button>
 
             <label for="volume" id="volume-label">🔊</label>
             <input id="volume" type="range" min="0" max="1" value="1" step="0.01" >
 
             <div>
-                <ul class="js-list"></ul>
+                <ul class="js-list">
+                  <li>Please select audio</li>
+                </ul>
             </div>
         </div>
     </div>
