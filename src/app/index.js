@@ -21,7 +21,7 @@ class AudioPlayer {
 
     setActionPlayer(files) {
         this.renderListAudio(files);
-        this.initPlayingAudio();
+        this.setPlayingAudio(this.listSection.firstChild);
         this.setClickAudio();
         this.setTimeAudio();
     }
@@ -35,10 +35,6 @@ class AudioPlayer {
         }
 
         this.listSection.innerHTML = listAudio.join('');
-    }
-
-    initPlayingAudio() {
-        this.setPlayingAudio(this.listSection.firstChild);
     }
 
     setClickAudio() {
