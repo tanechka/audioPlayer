@@ -4,24 +4,26 @@ import './main.styl';
 class AudioPlayer {
     constructor() {
         this.audio = new Audio();
-        this.inputSelectFiles = document.querySelector('.js-files');
+
         this.listSection = document.querySelector('.js-list');
-        this.playButton = document.querySelector('.js-play');
         this.pauseButton = document.querySelector('.js-pause');
-        this.nextButton = document.querySelector('.js-next');
-        this.prevButton = document.querySelector('.js-prev');
-        this.statusAudio = document.querySelector('.js-playing');;
+        this.rangeInput = document.querySelector('.js-range');
+        this.statusAudio = null;
     };
 
     addEventChange() {
-        this.inputSelectFiles.addEventListener('change', (input) => {
+        const $inputSelectFiles = document.querySelector('.js-files');
+
+        $inputSelectFiles.addEventListener('change', (input) => {
             this.setActionPlayer(input.currentTarget.files);
         });
     }
 
     setActionPlayer(files) {
         this.renderListAudio(files);
-        this.initPlayingItem();
+        this.initPlayingAudio();
+        this.setClickAudio();
+        this.setTimeAudio();
     }
 
     renderListAudio(listFiles) {
@@ -33,61 +35,148 @@ class AudioPlayer {
         }
 
         this.listSection.innerHTML = listAudio.join('');
-      }
-
-    initPlayingItem() {
-      //console.log(this.listSection)
-        this.setActiveItem(this.listSection.firstChild);
-      //  this.listSection.firstChild
-        // this.listSection.addEventListener('click', (event) => {
-        //   this.setActiveItem(event.target);
-        // });
     }
 
-    setActiveItem(itemToPlay) {
-        this.audio.src = itemToPlay.dataset.file;
-        this.removeActiveClass();
-        itemToPlay.classList.add('js-playing');
-        this.audio.play();
+    initPlayingAudio() {
+        this.setPlayingAudio(this.listSection.firstChild);
     }
 
-    removeActiveClass() {
+    setClickAudio() {
+        this.listSection.addEventListener('click', (event) => {
+            this.setPlayingAudio(event.target);
+        });
+    }
+
+    setPlayingAudio(itemToPlay) {
+        this.actionAudioButton();
+        this.audioCanPlay(itemToPlay);
+        this.setRangeValue();
+    }
+
+    setTimeAudio() {
+        const self = this;
+
+        this.rangeInput.addEventListener('click', function(event) {
+            self.audio.currentTime = parseInt(event.target.value);
+        });
+    }
+
+    setNextAudioWhenEnd() {
+        this.audio.addEventListener('ended', () => {
+            this.setNextAudio();
+        });
+    }
+
+    audioCanPlay(itemToPlay) {
+        const src = itemToPlay.dataset.file;
+
+        this.initPrevNextAction(itemToPlay, src);
+
+        this.audio.addEventListener('canplay', () => {
+            this.setRangeAudio();
+        });
+    }
+
+    setRangeValue() {
+        const self = this;
+
+        setInterval(function () {
+            self.rangeInput.value = self.audio.currentTime;
+        }, 3000);
+    }
+
+    setRangeAudio() {
+        this.rangeInput.max = this.audio.duration;
+    }
+
+    actionAudioButton() {
+        this.pauseButton.classList.contains('hidden') && this.toggleClassHidden();
+    }
+
+    setAudioSrc(src) {
+        this.audio.src = src;
+    }
+
+    addActiveClass(itemToPlay) {
         this.statusAudio && this.statusAudio.classList.remove('js-playing');
+        this.statusAudio = itemToPlay;
+
+        itemToPlay.classList.add('js-playing');
     }
 
     createTemplate(file) {
         return `<li data-file="${window.URL.createObjectURL(file)}">${file.name}</li>`;
     }
 
-            // let audio = new Audio();
-            //
-            // this.listSection.addEventListener('click', function (event) {
-            //     document.querySelector('.js-playing') !== null && document.querySelector('.js-playing').classList.remove('js-playing');
-            //     audio.src = event.target.dataset.file;
-            //     event.target.classList.add('js-playing');
-            // });
-            //
-            // this.play.addEventListener('click', function (event) {
-            //     audio.play();
-            // });
-            //
-            // this.pause.addEventListener('click', function (event) {
-            //     audio.pause();
-            // });
-            //
-            // this.nextButton.addEventListener('click', function (event) {
-            //     audio.src = document.querySelector('.js-playing').nextSibling.dataset.file;
-            //     document.querySelector('.js-playing') !== null && document.querySelector('.js-playing').classList.remove('js-playing');
-            //     audio.play();
-            // });
-            //
-            // this.prevButton.addEventListener('click', function (event) {
-            //     document.querySelector('.js-playing') !== null && document.querySelector('.js-playing').classList.remove('js-playing');
-            //     audio.src = document.querySelector('.js-playing').prevSibling.dataset.file;
-            //     audio.play();
-            // });
+    toggleClassHidden() {
+        const buttons = document.querySelectorAll('.js-toggle-hidden');
+
+        buttons.forEach(button => {
+            button.classList.toggle('hidden');
+        });
+    }
+
+    setNextAudio() {
+        const nextAudio = this.statusAudio.nextSibling;
+
+        if (nextAudio) {
+            const nextAudioSrc = nextAudio.dataset.file;
+
+            this.initPrevNextAction(nextAudio, nextAudioSrc);
+        }
+    }
+
+    playAudio() {
+        const $playButton = document.querySelector('.js-play');
+
+        $playButton.addEventListener('click', () => {
+            this.toggleClassHidden();
+            this.audio.play();
+        });
+    }
+
+    pauseAudio() {
+        this.pauseButton.addEventListener('click', () => {
+            this.toggleClassHidden();
+            this.audio.pause();
+        });
+    }
+
+    nextAudio() {
+        const $nextButton = document.querySelector('.js-next');
+
+        $nextButton.addEventListener('click', () => {
+            this.setNextAudio();
+        });
+    }
+
+    prevAudio() {
+        const $prevButton = document.querySelector('.js-prev');
+
+        $prevButton.addEventListener('click', () => {
+            const prevAudio = this.statusAudio.previousSibling;
+
+            if (prevAudio) {
+                const prevAudioSrc = prevAudio.dataset.file;
+
+                this.initPrevNextAction(prevAudio, prevAudioSrc);
+            }
+        });
+    }
+
+    initPrevNextAction(audio, src) {
+        this.addActiveClass(audio);
+        this.setAudioSrc(src);
+        this.audio.play();
+    }
+
     init() {
         this.addEventChange();
+        this.playAudio();
+        this.pauseAudio();
+        this.nextAudio();
+        this.prevAudio();
+        this.setNextAudioWhenEnd();
     }
 }
 
