@@ -5,10 +5,27 @@
     </head>
   <body>
     <div id="app">
-      <input type="file" name="files" id="files" class="js-files" multiple accept=".mp3" />
-      <audio autoplay controls class="js-player">
-          <p>Ваш браузер не подддерживает HTML5 аудио.</p>
-      </audio>
+        <div class="section-player">
+            <div>
+                <ul class="js-list list-audio">
+                  <li>Please select audio</li>
+                </ul>
+            </div>
+            <div class="js-controls section-controls">
+                <button title="Play" class="js-play js-toggle-hidden button play"></button>
+                <button title="Pause" class="js-pause js-toggle-hidden button pause hidden"></button>
+                <button title="Previous" class="js-prev prev button"></button>
+                <button title="Next" class="js-next next button"></button>
+
+                <div class="download-button">
+                    <input type="file" name="files" id="files" class="js-files download button" multiple accept=".mp3" />
+                </div>
+
+                <div>
+                    <input class="js-range range" type="range" min="0" step="0" value="0" />
+                </div>
+            </div>
+        </div>
     </div>
   </body>
 </html>

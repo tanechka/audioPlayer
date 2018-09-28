@@ -1,2 +1,86 @@
-body
-  font-family: 'Arial, sans-serif'
+#app
+  font-family: sans-serif
+
+.list-audio
+  background-color: #e6e6e6
+  margin: 0
+  padding: 0
+  clear: both
+  cursor: pointer
+
+  li
+    padding: 10px
+    list-style-type: none
+    color: #333
+
+    &:nth-child(even)
+      list-style-type: none
+      background-color: #eee
+      text-decoration: none
+      color: #4e4f4f
+
+    &.js-playing
+      background-color: #00bd9b
+
+.section-player
+  width: 310px
+  margin: 50px auto
+  font-family: sans-serif
+
+  .section-controls
+    background-color: #333
+    padding: 10px 20px;
+
+    .range
+      -webkit-appearance: none
+      -moz-appearance: none
+      background-color: #00BD9B
+      width: 100%
+      height: 2px
+      margin-bottom: 15px
+      margin-top: 27px
+
+      &:focus
+        outline: none
+
+    .button
+      display: inline-block
+      width: 27px
+      height: 27px
+      border: 0 none transparent
+      cursor: pointer
+
+      &.play
+        width: 33px
+        height: 33px
+        background: url('./assets/images/play.svg') center no-repeat
+
+      &.pause
+        width: 33px
+        height: 33px
+        background: url('./assets/images/pause.svg') center no-repeat
+
+      &.prev
+        background: url('./assets/images/prev.svg') center no-repeat
+
+      &.next
+        background: url('./assets/images/next.svg') center no-repeat
+
+      &.download
+        opacity: 0
+        cursor: pointer
+        font-size: 1px
+        position: relative
+        top: -15px
+
+      &.hidden
+        display: none
+
+    .download-button
+      display: inline-block
+      float: right
+      cursor: pointer
+      margin-top: 8px
+      width: 23px
+      height: 23px
+      background: url('./assets/images/download.svg') center no-repeat
