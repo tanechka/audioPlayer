@@ -11,12 +11,12 @@ export default class AudioList extends Component {
     );
   }
 
-  render (tracks) {
-    const listAudio = tracks.map((file, index) => {
+  render (audio) {
+    const listAudio = audio.map((file, index) => {
       return `<li data-index="${index}">${file.name}</li>`;
     });
 
-    this.element.innerHTML = listAudio.join('');
+    this.element.innerHTML = this.innerListAudio(listAudio);
   }
 
   getIndex (element) {
@@ -25,11 +25,21 @@ export default class AudioList extends Component {
 
   setActive (index) {
     const audioElement = this.element.childNodes[index];
-    audioElement.classList.add('js-playing');
+
+    audioElement && audioElement.classList.add('js-playing');
   }
 
   setInactive (index) {
     const audioElement = this.element.childNodes[index];
-    audioElement.classList.remove('js-playing');
+
+    audioElement && audioElement.classList.remove('js-playing');
+  }
+
+  setDefault () {
+     return `<li>Please select audio</li>`;
+  }
+
+  innerListAudio(listAudio) {
+    return listAudio.length ? listAudio.join('') : this.setDefault();
   }
 }

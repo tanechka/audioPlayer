@@ -14,6 +14,7 @@ export default class AudioControls extends Component {
 
   addChangeListener () {
     const $inputSelectFiles = this.element.querySelector('.js-files');
+
     $inputSelectFiles.addEventListener('change', input =>
       this.onChange(input.currentTarget.files)
     );
@@ -48,8 +49,6 @@ export default class AudioControls extends Component {
   }
 
   addRangeChangeListener () {
-    const self = this;
-
     this.rangeInput.addEventListener('click', event =>
       this.onRangeChange(parseInt(event.target.value))
     );

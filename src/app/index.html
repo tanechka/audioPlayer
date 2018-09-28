@@ -11,15 +11,19 @@
                   <li>Please select audio</li>
                 </ul>
             </div>
-            <div class="js-controls">
-              <button title="Play" class="js-play js-toggle-hidden">▶</button>
-              <button title="Pause" class="js-pause js-toggle-hidden hidden">⏸</button>
-              <button title="Previous" class="js-prev">⏮</button>
-              <button title="Next" class="js-next">⏭</button>
-              <input type="file" name="files" id="files" class="js-files" multiple accept=".mp3" />
+            <div class="js-controls section-controls">
+                <button title="Play" class="js-play js-toggle-hidden button play"></button>
+                <button title="Pause" class="js-pause js-toggle-hidden button pause hidden"></button>
+                <button title="Previous" class="js-prev prev button"></button>
+                <button title="Next" class="js-next next button"></button>
 
-              <input class="js-range" type="range" min="0" step="0" value="0" />
-              <span class="js-length-audio"></span>
+                <div class="download-button">
+                    <input type="file" name="files" id="files" class="js-files download button" multiple accept=".mp3" />
+                </div>
+
+                <div>
+                    <input class="js-range range" type="range" min="0" step="0" value="0" />
+                </div>
             </div>
         </div>
     </div>

@@ -15,8 +15,8 @@ export default class AudioPlayer {
     this.audioControls = new AudioControls({
       element: document.querySelector('.js-controls'),
       onChange: this.onAudioChange.bind(this),
-      onPlay: () => this.audio.play(),
-      onPause: () => this.audio.pause(),
+      onPlay: () => this.playAudio(),
+      onPause: () => this.pauseAudio(),
       onPlayNext: this.playNextAudio.bind(this),
       onPlayPrev: this.playPrevAudio.bind(this),
       onRangeChange: this.setTimeAudio.bind(this)
@@ -26,11 +26,23 @@ export default class AudioPlayer {
   };
 
   onAudioChange (files) {
-    this.setTracks(files);
+    this.setAudio(files);
     this.setActionPlayer();
   }
 
-  setTracks (files) {
+  playAudio () {
+    if (this.audios.length) {
+      this.audio.play();
+    }
+  }
+
+  pauseAudio () {
+    if (this.audios.length) {
+      this.audio.pause();
+    }
+  }
+
+  setAudio (files) {
     this.audios = [];
 
     for (let file of files) {
@@ -41,7 +53,7 @@ export default class AudioPlayer {
     }
   }
 
-  setActionPlayer (files) {
+  setActionPlayer () {
     this.audioList.render(this.audios);
     this.setPlayingAudio(0);
   }
@@ -71,7 +83,7 @@ export default class AudioPlayer {
   setRangeValue () {
     setInterval(() => {
       this.audio && this.audioControls.setRangeValue(this.audio.currentTime);
-    }, 1000);
+    }, 3000);
   }
 
   setRangeAudio () {
@@ -86,6 +98,7 @@ export default class AudioPlayer {
     if (this.activeAudio !== null) {
       this.audioList.setInactive(this.activeAudio);
     }
+
     this.activeAudio = index;
     this.audioList.setActive(index);
   }
@@ -111,6 +124,14 @@ export default class AudioPlayer {
   }
 
   initPrevNextAction (index) {
+    if (this.audios.length) {
+      this.hasAdiosInit(index);
+    } else {
+      this.setAudioSrc('');
+    }
+  }
+
+  hasAdiosInit(index) {
     this.addActiveClass(index);
     this.setAudioSrc(this.audios[index].src);
     this.audio.play();
